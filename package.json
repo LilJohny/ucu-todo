@@ -1,0 +1,29 @@
+{
+  "name": "ucu-todo",
+  "version": "1.0.0",
+  "description": "Simple TODO list in javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LilJohny/ucu-todo.git"
+  },
+  "keywords": [
+    "TODO",
+    "JavaScript",
+    "HTML",
+    "CSS"
+  ],
+  "author": "Denis Ivanenko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LilJohny/ucu-todo/issues"
+  },
+  "homepage": "https://github.com/LilJohny/ucu-todo#readme",
+  "dependencies": {
+    "html-tags": "^3.1.0",
+    "serve": "^11.3.0"
+  }
+}
