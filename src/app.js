@@ -9,12 +9,12 @@ import {
 import { Footer } from './components/footer/index.js';
 
 const todos = [
-  {isDone: true, title: '(Done) Todo 1'},
-  {isDone: false, title: 'Todo 2'}
+  { isDone: true, title: '(Done) Todo 1' },
+  { isDone: false, title: 'Todo 2' }
 ];
 
 class App extends Stepan.Component {
-  render(todos =  []) {
+  render(todos = []) {
     const rootElement = this.parent;
     const divContainer = Stepan.createElement('div', rootElement);
 
@@ -29,10 +29,10 @@ class App extends Stepan.Component {
     new TodoList(sectionMain).render(todos);
 
     // Footer-----------------
-    new Footer(divContainer).render(todos)
+    new Footer(divContainer).render(todos);
 
-    return rootElement
+    return rootElement;
   }
 }
 
-new App(document.getElementById('todoapp')).render(todos)
+new App(document.getElementById('todoapp')).render(todos);
