@@ -11,7 +11,7 @@
 import Stepan from '../../lib/stepan.js';
 
 export default class TodoItem extends Stepan.Component {
-  render({ isDone, title }, id) { // render will always accept data to render
+  render({ isDone, title, id }) { // render will always accept data to render
     const rootElement = Stepan.createElement('li', this.parent, { class: isDone && 'completed' });
     const todoViewContainer = Stepan.createElement('div', rootElement, { id: `view-${id}`, class: 'view' });
 

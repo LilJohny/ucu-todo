@@ -494,9 +494,10 @@ var TodoItem = /*#__PURE__*/function (_Stepan$Component) {
 
   _createClass(TodoItem, [{
     key: "render",
-    value: function render(_ref, id) {
+    value: function render(_ref) {
       var isDone = _ref.isDone,
-          title = _ref.title;
+          title = _ref.title,
+          id = _ref.id;
 
       // render will always accept data to render
       var rootElement = _stepan["default"].createElement('li', this.parent, {
@@ -639,7 +640,7 @@ var TodoList = /*#__PURE__*/function (_Stepan$Component) {
       for (var i = 0; i < todos.length; i++) {
         var todoObject = todos[i];
         var todoItem = new _index.TodoItem(rootElement);
-        todoItem.render(todoObject, i);
+        todoItem.render(todoObject);
       }
 
       return rootElement;

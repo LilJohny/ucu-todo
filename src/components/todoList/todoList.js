@@ -34,7 +34,7 @@ export default class TodoList extends Stepan.Component {
     for (let i = 0; i < todos.length; i++) {
       const todoObject = todos[i];
       const todoItem = new TodoItem(rootElement);
-      todoItem.render(todoObject, i);
+      todoItem.render(todoObject);
     }
     return rootElement;
   }
