@@ -231,7 +231,7 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
     value: function setAddToDoEvent() {
       this.input = _stepan["default"].getElementById(null, "new-todo");
       this.background = _stepan["default"].getElementById(null, "background");
-      this.background.addEventListener("keyup", App.addToDo);
+      this.input.addEventListener("keyup", App.addToDo);
     }
   }, {
     key: "setDeleteToDo",

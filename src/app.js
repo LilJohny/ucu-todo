@@ -90,7 +90,7 @@ class App extends Stepan.Component {
   setAddToDoEvent() {
     this.input = Stepan.getElementById(null, "new-todo");
     this.background = Stepan.getElementById(null, "background");
-    this.background.addEventListener("keyup", App.addToDo);
+    this.input.addEventListener("keyup", App.addToDo);
   }
 
   setDeleteToDo() {
