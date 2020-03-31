@@ -17,9 +17,17 @@ class App extends Stepan.Component {
   constructor(parent, todoList) {
     super(parent);
     this.todoListValue = todoList;
+    this.setToDoIds();
+  }
+  setToDoIds() {
+    for (let i = 0; i < this.todoListValue.length; i++) {
+      let todo = this.todoListValue[i];
+      todo.id = i;
+    }
+    console.log(this.todoListValue);
   }
   render() {
-    
+
     const rootElement = this.parent;
     const divContainer = Stepan.createElement('div', rootElement);
     // TodoListHead-----------------
@@ -54,17 +62,35 @@ class App extends Stepan.Component {
   }
   static addToDo(event) {
     if (event.keyCode === 13) {
-      app.todoList.push({ isDone: false, title: app.input.value});
+      app.todoList.push({ isDone: false, title: app.input.value });
       app.todoListNode.render(app.todoList);
       app.footerNode.render(app.todoList);
       app.cleanInput();
     }
   }
-
-  setEvents() {
-    this.input = Stepan.getElementById(null, "new-todo");
+  static destroyToDo(event) {
+    let id = event.originalTarget.id.split("-")[1];
+    app.todoList = app.todoList.filter((todoObject) => todoObject.id != id);
+    app.todoListNode.render(app.todoList);
+    app.footerNode.render(app.todoList);
+    app.setToDoIds();
+  }
+  setAddToDoEvent() {
+    this.input = Stepan.getElementById( null,"new-todo");
     this.background = Stepan.getElementById(null, "background");
     this.background.addEventListener("keyup", App.addToDo);
+  }
+  
+  setDeleteToDo() {
+    this.destroys = Stepan.getElementsByClassName("destroy");
+    for (let destroy of this.destroys) {
+      console.log(destroy);
+      destroy.addEventListener("click", App.destroyToDo);
+    }
+  }
+  setEvents() {
+    this.setAddToDoEvent();
+    this.setDeleteToDo();
   }
 }
 

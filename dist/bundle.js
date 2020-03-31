@@ -136,6 +136,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _createForOfIteratorHelper(o) { if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (o = _unsupportedIterableToArray(o))) { var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var it, normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -176,10 +182,23 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
 
     _this = _super.call(this, parent);
     _this.todoListValue = todoList;
+
+    _this.setToDoIds();
+
     return _this;
   }
 
   _createClass(App, [{
+    key: "setToDoIds",
+    value: function setToDoIds() {
+      for (var i = 0; i < this.todoListValue.length; i++) {
+        var todo = this.todoListValue[i];
+        todo.id = i;
+      }
+
+      console.log(this.todoListValue);
+    }
+  }, {
     key: "render",
     value: function render() {
       var rootElement = this.parent;
@@ -210,11 +229,37 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
       this.input.value = "";
     }
   }, {
-    key: "setEvents",
-    value: function setEvents() {
+    key: "setAddToDoEvent",
+    value: function setAddToDoEvent() {
       this.input = _stepan["default"].getElementById(null, "new-todo");
       this.background = _stepan["default"].getElementById(null, "background");
       this.background.addEventListener("keyup", App.addToDo);
+    }
+  }, {
+    key: "setDeleteToDo",
+    value: function setDeleteToDo() {
+      this.destroys = _stepan["default"].getElementsByClassName("destroy");
+
+      var _iterator = _createForOfIteratorHelper(this.destroys),
+          _step;
+
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var destroy = _step.value;
+          console.log(destroy);
+          destroy.addEventListener("click", App.destroyToDo);
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+    }
+  }, {
+    key: "setEvents",
+    value: function setEvents() {
+      this.setAddToDoEvent();
+      this.setDeleteToDo();
     }
   }, {
     key: "todoList",
@@ -238,6 +283,17 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
         app.footerNode.render(app.todoList);
         app.cleanInput();
       }
+    }
+  }, {
+    key: "destroyToDo",
+    value: function destroyToDo(event) {
+      var id = event.originalTarget.id.split("-")[1];
+      app.todoList = app.todoList.filter(function (todoObject) {
+        return todoObject.id != id;
+      });
+      app.todoListNode.render(app.todoList);
+      app.footerNode.render(app.todoList);
+      app.setToDoIds();
     }
   }]);
 
@@ -438,7 +494,7 @@ var TodoItem = /*#__PURE__*/function (_Stepan$Component) {
 
   _createClass(TodoItem, [{
     key: "render",
-    value: function render(_ref) {
+    value: function render(_ref, id) {
       var isDone = _ref.isDone,
           title = _ref.title;
 
@@ -448,11 +504,13 @@ var TodoItem = /*#__PURE__*/function (_Stepan$Component) {
       });
 
       var todoViewContainer = _stepan["default"].createElement('div', rootElement, {
+        id: "view-".concat(id),
         "class": 'view'
       }); // TODO: Input must be checked if todo item is done
 
 
       _stepan["default"].createElement('input', todoViewContainer, {
+        id: "toggle-".concat(id),
         "class": "toggle",
         type: "checkbox"
       });
@@ -462,10 +520,12 @@ var TodoItem = /*#__PURE__*/function (_Stepan$Component) {
       });
 
       _stepan["default"].createElement('button', todoViewContainer, {
+        id: "destroy-".concat(id),
         "class": "destroy"
       });
 
       _stepan["default"].createElement('input', todoViewContainer, {
+        id: "edit-".concat(id),
         "class": "edit",
         value: title
       });
@@ -576,9 +636,12 @@ var TodoList = /*#__PURE__*/function (_Stepan$Component) {
         "class": name
       });
 
-      todos.forEach(function (todoObject) {
-        return new _index.TodoItem(rootElement).render(todoObject);
-      });
+      for (var i = 0; i < todos.length; i++) {
+        var todoObject = todos[i];
+        var todoItem = new _index.TodoItem(rootElement);
+        todoItem.render(todoObject, i);
+      }
+
       return rootElement;
     }
   }], [{
@@ -798,7 +861,7 @@ var Stepan = /*#__PURE__*/function () {
     }
   }, {
     key: "getElementsByClassName",
-    value: function getElementsByClassName(parent, className) {
+    value: function getElementsByClassName(className) {
       return document.getElementsByClassName(className);
     }
   }]);

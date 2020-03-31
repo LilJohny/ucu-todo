@@ -27,8 +27,8 @@ export default class Stepan {
   }
   static getElementById(parent, Id) {
     return document.getElementById(Id);
-  }
-  static getElementsByClassName(parent, className) {
+    } 
+  static getElementsByClassName(className) {
     return document.getElementsByClassName(className);
   }
 }
