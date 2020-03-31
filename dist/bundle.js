@@ -292,9 +292,11 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
     key: "addToDo",
     value: function addToDo(event) {
       if (event.keyCode === 13) {
+        var todoId = app.todoList.length;
         app.todoList.push({
           isDone: false,
-          title: app.input.value
+          title: app.input.value,
+          id: todoId
         });
         app.todoListNode.render(app.todoList);
         app.footerNode.render(app.todoList);
@@ -308,9 +310,10 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
       app.todoList = app.todoList.filter(function (todoObject) {
         return todoObject.id != id;
       });
+      app.setToDoIds();
       app.todoListNode.render(app.todoList);
       app.footerNode.render(app.todoList);
-      app.setToDoIds();
+      app.setEvents();
     }
   }, {
     key: "completeToDo",
@@ -324,6 +327,7 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
       app.todoListNode.render(app.todoList);
       app.footerNode.render(app.todoList);
       app.setToDoIds();
+      app.setEvents();
     }
   }]);
 
@@ -656,6 +660,7 @@ var TodoList = /*#__PURE__*/function (_Stepan$Component) {
     key: "render",
     value: function render(todos) {
       // render will always accept data to render
+      console.log(todos);
       var name = TodoList.getName();
 
       var oldRootElement = _stepan["default"].getElementById(this.parent, name);

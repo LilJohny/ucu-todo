@@ -61,7 +61,8 @@ class App extends Stepan.Component {
   }
   static addToDo(event) {
     if (event.keyCode === 13) {
-      app.todoList.push({ isDone: false, title: app.input.value });
+      let todoId = app.todoList.length;
+      app.todoList.push({ isDone: false, title: app.input.value, id:todoId });
       app.todoListNode.render(app.todoList);
       app.footerNode.render(app.todoList);
       app.cleanInput();
@@ -70,9 +71,10 @@ class App extends Stepan.Component {
   static destroyToDo(event) {
     let id = event.originalTarget.id.split("-")[1];
     app.todoList = app.todoList.filter((todoObject) => todoObject.id != id);
+    app.setToDoIds();
     app.todoListNode.render(app.todoList);
     app.footerNode.render(app.todoList);
-    app.setToDoIds();
+    app.setEvents();
   }
   static completeToDo(event) {
     let id = event.originalTarget.id.split("-")[1];
@@ -82,6 +84,7 @@ class App extends Stepan.Component {
     app.todoListNode.render(app.todoList);
     app.footerNode.render(app.todoList);
     app.setToDoIds();
+    app.setEvents();
   }
   setAddToDoEvent() {
     this.input = Stepan.getElementById( null,"new-todo");
