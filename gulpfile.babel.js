@@ -11,3 +11,6 @@ gulp.task('scripts', () => {
         .pipe(gulp.dest('dist'))
         .pipe(buffer());     // You need this if you want to continue using the stream with other plugins
 });
+gulp.task('watch', function() {
+    gulp.watch(['src/*.js','src/*/*.js','src/*/*/*.js','src/*/*/*/*.js'], gulp.series('scripts'));
+});
