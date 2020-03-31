@@ -8,7 +8,7 @@
 //   <input class="edit" value="TODO 1">
 // </li>
 
-import Stepan from '/src/lib/stepan.js';
+import Stepan from '../../lib/stepan.js';
 
 export default class TodoItem extends Stepan.Component {
   render({isDone, title}) { // render will always accept data to render

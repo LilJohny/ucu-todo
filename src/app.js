@@ -1,4 +1,4 @@
-import Stepan from '/src/lib/stepan.js';
+import Stepan from './lib/stepan.js';
 
 import {
   TodoListHead,

@@ -8,7 +8,7 @@
 //   </ul>
 // </footer>
 
-import Stepan from '/src/lib/stepan.js';
+import Stepan from '../../lib/stepan.js';
 
 export default class Footer extends Stepan.Component {
   render(todos) { // render will always accept data to render

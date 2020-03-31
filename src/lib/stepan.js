@@ -1,8 +1,8 @@
+
 export default class Stepan {
   static createElement(element, parent, attributes = {}) {
     // TODO: check if this is a valid tag name
     const newElement = document.createElement(element);
-
     const { innerHTML, innerText } = attributes;
 
     for (let attribute in attributes) {
@@ -18,7 +18,7 @@ export default class Stepan {
     if (innerText) {
       newElement.innerText = innerText;
     }
-    
+
     parent.appendChild(newElement);
 
     return newElement;
@@ -26,13 +26,8 @@ export default class Stepan {
 }
 Stepan.Component = class {
   constructor(parent) {
-
-
-
     this.parent = parent;
   }
-
-
 };
 // TODO: 1. Create StepanError class to define all framework errors
 //       2. throw an error if parent is null or undefined, or if it's not a valid DOM object

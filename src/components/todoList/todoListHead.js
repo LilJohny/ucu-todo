@@ -4,7 +4,7 @@
 //   <input class="new-todo" placeholder="What needs to be done?" value="">
 // </header>
 
-import Stepan from '/src/lib/stepan.js';
+import Stepan from '../../lib/stepan.js';
 
 export default class TodoListHead extends Stepan.Component {
   render() { // render will always accept data to render
