@@ -1,4 +1,3 @@
-
 export default class Stepan {
   static createElement(element, parent, attributes = {}) {
     // TODO: check if this is a valid tag name
