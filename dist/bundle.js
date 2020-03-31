@@ -1,4 +1,129 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+module.exports=[
+	"a",
+	"abbr",
+	"address",
+	"area",
+	"article",
+	"aside",
+	"audio",
+	"b",
+	"base",
+	"bdi",
+	"bdo",
+	"blockquote",
+	"body",
+	"br",
+	"button",
+	"canvas",
+	"caption",
+	"cite",
+	"code",
+	"col",
+	"colgroup",
+	"data",
+	"datalist",
+	"dd",
+	"del",
+	"details",
+	"dfn",
+	"dialog",
+	"div",
+	"dl",
+	"dt",
+	"em",
+	"embed",
+	"fieldset",
+	"figcaption",
+	"figure",
+	"footer",
+	"form",
+	"h1",
+	"h2",
+	"h3",
+	"h4",
+	"h5",
+	"h6",
+	"head",
+	"header",
+	"hgroup",
+	"hr",
+	"html",
+	"i",
+	"iframe",
+	"img",
+	"input",
+	"ins",
+	"kbd",
+	"label",
+	"legend",
+	"li",
+	"link",
+	"main",
+	"map",
+	"mark",
+	"math",
+	"menu",
+	"menuitem",
+	"meta",
+	"meter",
+	"nav",
+	"noscript",
+	"object",
+	"ol",
+	"optgroup",
+	"option",
+	"output",
+	"p",
+	"param",
+	"picture",
+	"pre",
+	"progress",
+	"q",
+	"rb",
+	"rp",
+	"rt",
+	"rtc",
+	"ruby",
+	"s",
+	"samp",
+	"script",
+	"section",
+	"select",
+	"slot",
+	"small",
+	"source",
+	"span",
+	"strong",
+	"style",
+	"sub",
+	"summary",
+	"sup",
+	"svg",
+	"table",
+	"tbody",
+	"td",
+	"template",
+	"textarea",
+	"tfoot",
+	"th",
+	"thead",
+	"time",
+	"title",
+	"tr",
+	"track",
+	"u",
+	"ul",
+	"var",
+	"video",
+	"wbr"
+]
+
+},{}],2:[function(require,module,exports){
+'use strict';
+module.exports = require('./html-tags.json');
+
+},{"./html-tags.json":1}],3:[function(require,module,exports){
 "use strict";
 
 var _stepan = _interopRequireDefault(require("./lib/stepan.js"));
@@ -44,42 +169,78 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
 
   var _super = _createSuper(App);
 
-  function App() {
+  function App(parent, todoList) {
+    var _this;
+
     _classCallCheck(this, App);
 
-    return _super.apply(this, arguments);
+    _this = _super.call(this, parent);
+    _this.todoListValue = todoList;
+    return _this;
   }
 
   _createClass(App, [{
     key: "render",
     value: function render() {
-      var todos = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
       var rootElement = this.parent;
 
       var divContainer = _stepan["default"].createElement('div', rootElement); // TodoListHead-----------------
 
 
-      new _index.TodoListHead(divContainer).render(); // TodoListToggleAll-----------------
+      this.todoListHeadNode = new _index.TodoListHead(divContainer);
+      this.todoListHeadNode.render(); // TodoListToggleAll-----------------
 
       var sectionMain = _stepan["default"].createElement('section', divContainer, {
         "class": 'main'
       });
 
-      new _index.TodoListToggleAll(sectionMain).render(); // TodoList-----------------
+      this.todoListToggleAllNode = new _index.TodoListToggleAll(sectionMain);
+      this.todoListToggleAllNode.render(); // TodoList-----------------
 
-      new _index.TodoList(sectionMain).render(todos); // Footer-----------------
+      this.todoListNode = new _index.TodoList(sectionMain);
+      this.todoListNode.render(this.todoList); // Footer-----------------
 
-      new _index2.Footer(divContainer).render(todos);
+      this.footerNode = new _index2.Footer(divContainer);
+      this.footerNode.render(this.todoList);
       return rootElement;
+    }
+  }, {
+    key: "todoList",
+    set: function set(todos) {
+      this.todoListValue = todos;
+      this.todoListNode.render(this.todoList);
+      this.footerNode.render(this.todoList);
+    },
+    get: function get() {
+      return this.todoListValue;
     }
   }]);
 
   return App;
 }(_stepan["default"].Component);
 
-new App(document.getElementById('todoapp')).render(todos);
+function setEvents() {
+  var input = _stepan["default"].getElementById(null, "new-todo");
 
-},{"./components/footer/index.js":3,"./components/todoList/index.js":6,"./lib/stepan.js":10}],2:[function(require,module,exports){
+  input.addEventListener("keyup", function (event) {
+    if (event.keyCode === 13) {
+      app.todoList.push({
+        isDone: false,
+        title: input.value
+      });
+      app.todoListNode.render(app.todoList);
+      app.footerNode.render(app.todoList);
+    }
+  });
+}
+
+var app = new App(document.getElementById('todoapp'), todos);
+app.render();
+setEvents(); //app.todoList.push({ isDone: false, title: 'Todo 2' });
+//console.log(Stepan.getElementsById("todo-list"));
+//app.render();
+
+},{"./components/footer/index.js":5,"./components/todoList/index.js":8,"./lib/stepan.js":12}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -128,8 +289,19 @@ var Footer = /*#__PURE__*/function (_Stepan$Component) {
     key: "render",
     value: function render(todos) {
       // render will always accept data to render
-      var rootElement = _stepan["default"].createElement('footer', this.parent, {
-        "class": 'footer'
+      var name = Footer.getName();
+
+      var oldRootElement = _stepan["default"].getElementById(this.parent, name);
+
+      console.log(_stepan["default"].getElementById(name));
+
+      if (oldRootElement !== null) {
+        oldRootElement.remove();
+      }
+
+      var rootElement = _stepan["default"].createElement(name, this.parent, {
+        id: name,
+        "class": name
       });
 
       _stepan["default"].createElement('span', rootElement, {
@@ -167,6 +339,11 @@ var Footer = /*#__PURE__*/function (_Stepan$Component) {
 
       return rootElement;
     }
+  }], [{
+    key: "getName",
+    value: function getName() {
+      return 'footer';
+    }
   }]);
 
   return Footer;
@@ -174,7 +351,7 @@ var Footer = /*#__PURE__*/function (_Stepan$Component) {
 
 exports["default"] = Footer;
 
-},{"../../lib/stepan.js":10}],3:[function(require,module,exports){
+},{"../../lib/stepan.js":12}],5:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -191,7 +368,7 @@ var _footer = _interopRequireDefault(require("./footer.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-},{"./footer.js":2}],4:[function(require,module,exports){
+},{"./footer.js":4}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -208,7 +385,7 @@ var _todoItem = _interopRequireDefault(require("./todoItem.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-},{"./todoItem.js":5}],5:[function(require,module,exports){
+},{"./todoItem.js":7}],7:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -296,7 +473,7 @@ var TodoItem = /*#__PURE__*/function (_Stepan$Component) {
 
 exports["default"] = TodoItem;
 
-},{"../../lib/stepan.js":10}],6:[function(require,module,exports){
+},{"../../lib/stepan.js":12}],8:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -329,7 +506,7 @@ var _todoListToggleAll = _interopRequireDefault(require("./todoListToggleAll.js"
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-},{"./todoList.js":7,"./todoListHead.js":8,"./todoListToggleAll.js":9}],7:[function(require,module,exports){
+},{"./todoList.js":9,"./todoListHead.js":10,"./todoListToggleAll.js":11}],9:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -380,14 +557,30 @@ var TodoList = /*#__PURE__*/function (_Stepan$Component) {
     key: "render",
     value: function render(todos) {
       // render will always accept data to render
+      var name = TodoList.getName();
+
+      var oldRootElement = _stepan["default"].getElementById(this.parent, name);
+
+      console.log(_stepan["default"].getElementById(name));
+
+      if (oldRootElement !== null) {
+        oldRootElement.remove();
+      }
+
       var rootElement = _stepan["default"].createElement('ul', this.parent, {
-        "class": "todo-list"
+        id: name,
+        "class": name
       });
 
       todos.forEach(function (todoObject) {
         return new _index.TodoItem(rootElement).render(todoObject);
       });
       return rootElement;
+    }
+  }], [{
+    key: "getName",
+    value: function getName() {
+      return "todo-list";
     }
   }]);
 
@@ -396,7 +589,7 @@ var TodoList = /*#__PURE__*/function (_Stepan$Component) {
 
 exports["default"] = TodoList;
 
-},{"../../lib/stepan.js":10,"../todoItem/index.js":4}],8:[function(require,module,exports){
+},{"../../lib/stepan.js":12,"../todoItem/index.js":6}],10:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -454,6 +647,7 @@ var TodoListHead = /*#__PURE__*/function (_Stepan$Component) {
       });
 
       _stepan["default"].createElement('input', rootElement, {
+        id: "new-todo",
         "class": "new-todo",
         placeholder: "What needs to be done?",
         value: ""
@@ -468,7 +662,7 @@ var TodoListHead = /*#__PURE__*/function (_Stepan$Component) {
 
 exports["default"] = TodoListHead;
 
-},{"../../lib/stepan.js":10}],9:[function(require,module,exports){
+},{"../../lib/stepan.js":12}],11:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -538,13 +732,17 @@ var TodoListToggleAll = /*#__PURE__*/function (_Stepan$Component) {
 
 exports["default"] = TodoListToggleAll;
 
-},{"../../lib/stepan.js":10}],10:[function(require,module,exports){
+},{"../../lib/stepan.js":12}],12:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
+var _htmlTags = _interopRequireDefault(require("html-tags"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -561,7 +759,11 @@ var Stepan = /*#__PURE__*/function () {
     key: "createElement",
     value: function createElement(element, parent) {
       var attributes = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-      // TODO: check if this is a valid tag name
+
+      if (!_htmlTags["default"].includes(element)) {
+        console.log("Tag error"); //TODO throw Exception
+      }
+
       var newElement = document.createElement(element);
       var innerHTML = attributes.innerHTML,
           innerText = attributes.innerText;
@@ -585,6 +787,16 @@ var Stepan = /*#__PURE__*/function () {
       parent.appendChild(newElement);
       return newElement;
     }
+  }, {
+    key: "getElementById",
+    value: function getElementById(parent, Id) {
+      return document.getElementById(Id);
+    }
+  }, {
+    key: "getElementsByClassName",
+    value: function getElementsByClassName(parent, className) {
+      return document.getElementsByClassName(className);
+    }
   }]);
 
   return Stepan;
@@ -604,4 +816,4 @@ Stepan.Component = /*#__PURE__*/function () {
 //       2. throw an error if parent is null or undefined, or if it's not a valid DOM object
 // TODO (Bonus): Ensure that every component returns a top-level root element
 
-},{}]},{},[1]);
+},{"html-tags":2}]},{},[3]);

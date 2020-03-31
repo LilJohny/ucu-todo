@@ -1,15 +1,17 @@
+import htmlTags from 'html-tags';
 
 export default class Stepan {
   static createElement(element, parent, attributes = {}) {
-    // TODO: check if this is a valid tag name
+    if (!htmlTags.includes(element)) {
+      console.log("Tag error"); //TODO throw Exception
+    }
     const newElement = document.createElement(element);
-    const { innerHTML, innerText } = attributes;
 
+    const { innerHTML, innerText } = attributes;
     for (let attribute in attributes) {
       if (['innerHTML', 'innerText'].includes(attribute)) {
         continue;
       }
-
       newElement.setAttribute(attribute, attributes[attribute]);
     }
     if (innerHTML) {
@@ -22,6 +24,12 @@ export default class Stepan {
     parent.appendChild(newElement);
 
     return newElement;
+  }
+  static getElementById(parent, Id) {
+    return document.getElementById(Id);
+  }
+  static getElementsByClassName(parent, className) {
+    return document.getElementsByClassName(className);
   }
 }
 Stepan.Component = class {

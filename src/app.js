@@ -8,31 +8,66 @@ import {
 
 import { Footer } from './components/footer/index.js';
 
-const todos = [
+let todos = [
   { isDone: true, title: '(Done) Todo 1' },
   { isDone: false, title: 'Todo 2' }
 ];
 
 class App extends Stepan.Component {
-  render(todos = []) {
+  constructor(parent, todoList) {
+    super(parent);
+    this.todoListValue = todoList;
+  }
+  render() {
+    
     const rootElement = this.parent;
     const divContainer = Stepan.createElement('div', rootElement);
-
     // TodoListHead-----------------
-    new TodoListHead(divContainer).render();
+    this.todoListHeadNode = new TodoListHead(divContainer);
+    this.todoListHeadNode.render();
 
     // TodoListToggleAll-----------------
     const sectionMain = Stepan.createElement('section', divContainer, { class: 'main' });
-    new TodoListToggleAll(sectionMain).render();
+    this.todoListToggleAllNode = new TodoListToggleAll(sectionMain);
+    this.todoListToggleAllNode.render();
 
     // TodoList-----------------
-    new TodoList(sectionMain).render(todos);
+    this.todoListNode = new TodoList(sectionMain);
+    this.todoListNode.render(this.todoList);
 
     // Footer-----------------
-    new Footer(divContainer).render(todos);
+    this.footerNode = new Footer(divContainer);
+    this.footerNode.render(this.todoList);
 
     return rootElement;
   }
+  set todoList(todos) {
+    this.todoListValue = todos;
+    this.todoListNode.render(this.todoList);
+    this.footerNode.render(this.todoList);
+  }
+  get todoList() {
+    return this.todoListValue;
+  }
 }
 
-new App(document.getElementById('todoapp')).render(todos);
+
+function setEvents() {
+  let input = Stepan.getElementById(null, "new-todo");
+  input.addEventListener("keyup", function (event) {
+    if (event.keyCode === 13) {
+      app.todoList.push({ isDone: false, title: input.value});
+      app.todoListNode.render(app.todoList);
+      app.footerNode.render(app.todoList);
+    }
+  });
+}
+
+var app = new App(document.getElementById('todoapp'), todos);
+app.render();
+setEvents();
+
+//app.todoList.push({ isDone: false, title: 'Todo 2' });
+//console.log(Stepan.getElementsById("todo-list"));
+//app.render();
+

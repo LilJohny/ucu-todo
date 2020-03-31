@@ -12,7 +12,13 @@ import Stepan from '../../lib/stepan.js';
 
 export default class Footer extends Stepan.Component {
   render(todos) { // render will always accept data to render
-    const rootElement = Stepan.createElement('footer', this.parent, { class: 'footer' });
+    const name = Footer.getName();
+    let oldRootElement = Stepan.getElementById(this.parent, name);
+    console.log(Stepan.getElementById(name));
+    if (oldRootElement !== null) {
+      oldRootElement.remove();
+    }
+    const rootElement = Stepan.createElement(name, this.parent, {id:name, class: name });
     Stepan.createElement('span', rootElement, {class: 'todo-count', innerText: `${todos.length} items left`});
 
     const filters = Stepan.createElement('ul', rootElement, { class: 'filters' });
@@ -27,5 +33,8 @@ export default class Footer extends Stepan.Component {
     Stepan.createElement('a', completed, { href: "#/completed", class: "", innerText: 'Completed' });
 
     return rootElement;
+  }
+  static getName() {
+    return 'footer';
   }
 }
