@@ -301,6 +301,7 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
         app.todoListNode.render(app.todoList);
         app.footerNode.render(app.todoList);
         app.cleanInput();
+        app.setEvents();
       }
     }
   }, {
