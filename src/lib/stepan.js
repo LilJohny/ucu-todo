@@ -12,10 +12,13 @@ export default class Stepan {
 
       newElement.setAttribute(attribute, attributes[attribute]);
     }
-
-    innerHTML && (newElement.innerHTML = innerHTML);
-    innerText && (newElement.innerText = innerText);
-
+    if (innerHTML) {
+      newElement.innerHTML = innerHTML;
+    }
+    if (innerText) {
+      newElement.innerText = innerText;
+    }
+    
     parent.appendChild(newElement);
 
     return newElement;
@@ -24,12 +27,13 @@ export default class Stepan {
 Stepan.Component = class {
   constructor(parent) {
 
-    // TODO: 1. Create StepanError class to define all framework errors
-    //       2. throw an error if parent is null or undefined, or if it's not a valid DOM object
+
 
     this.parent = parent;
   }
 
-  // TODO (Bonus): Ensure that every component returns a top-level root element
-};
 
+};
+// TODO: 1. Create StepanError class to define all framework errors
+//       2. throw an error if parent is null or undefined, or if it's not a valid DOM object
+// TODO (Bonus): Ensure that every component returns a top-level root element
