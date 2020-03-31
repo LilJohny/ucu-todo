@@ -49,23 +49,26 @@ class App extends Stepan.Component {
   get todoList() {
     return this.todoListValue;
   }
-}
-
-
-function setEvents() {
-  let input = Stepan.getElementById(null, "new-todo");
-  input.addEventListener("keyup", function (event) {
+  static addToDo(event) {
     if (event.keyCode === 13) {
-      app.todoList.push({ isDone: false, title: input.value});
+      app.todoList.push({ isDone: false, title: app.input.value});
       app.todoListNode.render(app.todoList);
       app.footerNode.render(app.todoList);
     }
-  });
+  }
+
+  setEvents() {
+    this.input = Stepan.getElementById(null, "new-todo");
+    this.input.addEventListener("keyup", App.addToDo);
+  }
 }
+
+
+
 
 var app = new App(document.getElementById('todoapp'), todos);
 app.render();
-setEvents();
+app.setEvents();
 
 //app.todoList.push({ isDone: false, title: 'Todo 2' });
 //console.log(Stepan.getElementsById("todo-list"));

@@ -205,6 +205,12 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
       return rootElement;
     }
   }, {
+    key: "setEvents",
+    value: function setEvents() {
+      this.input = _stepan["default"].getElementById(null, "new-todo");
+      this.input.addEventListener("keyup", App.addToDo);
+    }
+  }, {
     key: "todoList",
     set: function set(todos) {
       this.todoListValue = todos;
@@ -214,29 +220,26 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
     get: function get() {
       return this.todoListValue;
     }
+  }], [{
+    key: "addToDo",
+    value: function addToDo(event) {
+      if (event.keyCode === 13) {
+        app.todoList.push({
+          isDone: false,
+          title: app.input.value
+        });
+        app.todoListNode.render(app.todoList);
+        app.footerNode.render(app.todoList);
+      }
+    }
   }]);
 
   return App;
 }(_stepan["default"].Component);
 
-function setEvents() {
-  var input = _stepan["default"].getElementById(null, "new-todo");
-
-  input.addEventListener("keyup", function (event) {
-    if (event.keyCode === 13) {
-      app.todoList.push({
-        isDone: false,
-        title: input.value
-      });
-      app.todoListNode.render(app.todoList);
-      app.footerNode.render(app.todoList);
-    }
-  });
-}
-
 var app = new App(document.getElementById('todoapp'), todos);
 app.render();
-setEvents(); //app.todoList.push({ isDone: false, title: 'Todo 2' });
+app.setEvents(); //app.todoList.push({ isDone: false, title: 'Todo 2' });
 //console.log(Stepan.getElementsById("todo-list"));
 //app.render();
 
