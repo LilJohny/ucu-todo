@@ -41,6 +41,9 @@ class App extends Stepan.Component {
 
     return rootElement;
   }
+  cleanInput() {
+    this.input.value = "";
+  }
   set todoList(todos) {
     this.todoListValue = todos;
     this.todoListNode.render(this.todoList);
@@ -54,12 +57,14 @@ class App extends Stepan.Component {
       app.todoList.push({ isDone: false, title: app.input.value});
       app.todoListNode.render(app.todoList);
       app.footerNode.render(app.todoList);
+      app.cleanInput();
     }
   }
 
   setEvents() {
     this.input = Stepan.getElementById(null, "new-todo");
-    this.input.addEventListener("keyup", App.addToDo);
+    this.background = Stepan.getElementById(null, "background");
+    this.background.addEventListener("keyup", App.addToDo);
   }
 }
 
@@ -70,7 +75,4 @@ var app = new App(document.getElementById('todoapp'), todos);
 app.render();
 app.setEvents();
 
-//app.todoList.push({ isDone: false, title: 'Todo 2' });
-//console.log(Stepan.getElementsById("todo-list"));
-//app.render();
 

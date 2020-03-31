@@ -26,7 +26,6 @@ export default class TodoList extends Stepan.Component {
   render(todos) { // render will always accept data to render
     const name = TodoList.getName();
     let oldRootElement = Stepan.getElementById(this.parent, name);
-    console.log(Stepan.getElementById(name));
     if (oldRootElement !== null) {
       oldRootElement.remove();
     }

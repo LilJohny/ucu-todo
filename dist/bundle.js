@@ -205,10 +205,16 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
       return rootElement;
     }
   }, {
+    key: "cleanInput",
+    value: function cleanInput() {
+      this.input.value = "";
+    }
+  }, {
     key: "setEvents",
     value: function setEvents() {
       this.input = _stepan["default"].getElementById(null, "new-todo");
-      this.input.addEventListener("keyup", App.addToDo);
+      this.background = _stepan["default"].getElementById(null, "background");
+      this.background.addEventListener("keyup", App.addToDo);
     }
   }, {
     key: "todoList",
@@ -230,6 +236,7 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
         });
         app.todoListNode.render(app.todoList);
         app.footerNode.render(app.todoList);
+        app.cleanInput();
       }
     }
   }]);
@@ -239,9 +246,7 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
 
 var app = new App(document.getElementById('todoapp'), todos);
 app.render();
-app.setEvents(); //app.todoList.push({ isDone: false, title: 'Todo 2' });
-//console.log(Stepan.getElementsById("todo-list"));
-//app.render();
+app.setEvents();
 
 },{"./components/footer/index.js":5,"./components/todoList/index.js":8,"./lib/stepan.js":12}],4:[function(require,module,exports){
 "use strict";
@@ -295,8 +300,6 @@ var Footer = /*#__PURE__*/function (_Stepan$Component) {
       var name = Footer.getName();
 
       var oldRootElement = _stepan["default"].getElementById(this.parent, name);
-
-      console.log(_stepan["default"].getElementById(name));
 
       if (oldRootElement !== null) {
         oldRootElement.remove();
@@ -563,8 +566,6 @@ var TodoList = /*#__PURE__*/function (_Stepan$Component) {
       var name = TodoList.getName();
 
       var oldRootElement = _stepan["default"].getElementById(this.parent, name);
-
-      console.log(_stepan["default"].getElementById(name));
 
       if (oldRootElement !== null) {
         oldRootElement.remove();
