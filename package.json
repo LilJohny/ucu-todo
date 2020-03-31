@@ -23,7 +23,6 @@
   },
   "homepage": "https://github.com/LilJohny/ucu-todo#readme",
   "dependencies": {
-    "html-tags": "^3.1.0",
     "serve": "^11.3.0"
   }
 }
