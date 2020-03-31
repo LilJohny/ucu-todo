@@ -164,7 +164,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 var todos = [{
   isDone: true,
-  title: '(Done) Todo 1'
+  title: 'Todo 1'
 }, {
   isDone: false,
   title: 'Todo 2'
@@ -195,8 +195,6 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
         var todo = this.todoListValue[i];
         todo.id = i;
       }
-
-      console.log(this.todoListValue);
     }
   }, {
     key: "render",
@@ -246,7 +244,6 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
       try {
         for (_iterator.s(); !(_step = _iterator.n()).done;) {
           var destroy = _step.value;
-          console.log(destroy);
           destroy.addEventListener("click", App.destroyToDo);
         }
       } catch (err) {
@@ -256,10 +253,30 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
       }
     }
   }, {
+    key: "setCompleted",
+    value: function setCompleted() {
+      this.toggles = _stepan["default"].getElementsByClassName("toggle");
+
+      var _iterator2 = _createForOfIteratorHelper(this.toggles),
+          _step2;
+
+      try {
+        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+          var toggle = _step2.value;
+          toggle.addEventListener("click", App.completeToDo);
+        }
+      } catch (err) {
+        _iterator2.e(err);
+      } finally {
+        _iterator2.f();
+      }
+    }
+  }, {
     key: "setEvents",
     value: function setEvents() {
       this.setAddToDoEvent();
       this.setDeleteToDo();
+      this.setCompleted();
     }
   }, {
     key: "todoList",
@@ -291,6 +308,19 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
       app.todoList = app.todoList.filter(function (todoObject) {
         return todoObject.id != id;
       });
+      app.todoListNode.render(app.todoList);
+      app.footerNode.render(app.todoList);
+      app.setToDoIds();
+    }
+  }, {
+    key: "completeToDo",
+    value: function completeToDo(event) {
+      var id = event.originalTarget.id.split("-")[1];
+      var todo = app.todoList.filter(function (todoObject) {
+        return todoObject.id == id;
+      })[0];
+      var todoInd = app.todoList.indexOf(todo);
+      app.todoList[todoInd].isDone = !app.todoList[todoInd].isDone;
       app.todoListNode.render(app.todoList);
       app.footerNode.render(app.todoList);
       app.setToDoIds();
@@ -510,11 +540,13 @@ var TodoItem = /*#__PURE__*/function (_Stepan$Component) {
       }); // TODO: Input must be checked if todo item is done
 
 
-      _stepan["default"].createElement('input', todoViewContainer, {
+      var toggle = _stepan["default"].createElement('input', todoViewContainer, {
         id: "toggle-".concat(id),
         "class": "toggle",
         type: "checkbox"
       });
+
+      toggle.checked = isDone === true;
 
       _stepan["default"].createElement('label', todoViewContainer, {
         innerText: title

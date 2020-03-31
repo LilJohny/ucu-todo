@@ -9,7 +9,7 @@ import {
 import { Footer } from './components/footer/index.js';
 
 let todos = [
-  { isDone: true, title: '(Done) Todo 1' },
+  { isDone: true, title: 'Todo 1' },
   { isDone: false, title: 'Todo 2' }
 ];
 
@@ -24,7 +24,6 @@ class App extends Stepan.Component {
       let todo = this.todoListValue[i];
       todo.id = i;
     }
-    console.log(this.todoListValue);
   }
   render() {
 
@@ -75,6 +74,15 @@ class App extends Stepan.Component {
     app.footerNode.render(app.todoList);
     app.setToDoIds();
   }
+  static completeToDo(event) {
+    let id = event.originalTarget.id.split("-")[1];
+    let todo = app.todoList.filter((todoObject) => todoObject.id == id)[0];
+    let todoInd = app.todoList.indexOf(todo);
+    app.todoList[todoInd].isDone = !app.todoList[todoInd].isDone;
+    app.todoListNode.render(app.todoList);
+    app.footerNode.render(app.todoList);
+    app.setToDoIds();
+  }
   setAddToDoEvent() {
     this.input = Stepan.getElementById( null,"new-todo");
     this.background = Stepan.getElementById(null, "background");
@@ -84,13 +92,19 @@ class App extends Stepan.Component {
   setDeleteToDo() {
     this.destroys = Stepan.getElementsByClassName("destroy");
     for (let destroy of this.destroys) {
-      console.log(destroy);
       destroy.addEventListener("click", App.destroyToDo);
+    }
+  }
+  setCompleted() {
+    this.toggles = Stepan.getElementsByClassName("toggle");
+    for (let toggle of this.toggles) {
+      toggle.addEventListener("click", App.completeToDo);
     }
   }
   setEvents() {
     this.setAddToDoEvent();
     this.setDeleteToDo();
+    this.setCompleted();
   }
 }
 
