@@ -272,11 +272,38 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
       }
     }
   }, {
+    key: "setEdit",
+    value: function setEdit() {
+      this.edits = _stepan["default"].getElementsByClassName("edit");
+
+      var _iterator3 = _createForOfIteratorHelper(this.edits),
+          _step3;
+
+      try {
+        for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+          var edit = _step3.value;
+          edit.addEventListener("click", App.editToDo);
+        }
+      } catch (err) {
+        _iterator3.e(err);
+      } finally {
+        _iterator3.f();
+      }
+    }
+  }, {
+    key: "setToggleAll",
+    value: function setToggleAll() {
+      this.toggleAllNode = _stepan["default"].getElementById(null, "toggle-all");
+      this.toggleAllNode.addEventListener("click", App.toggleAll);
+    }
+  }, {
     key: "setEvents",
     value: function setEvents() {
       this.setAddToDoEvent();
       this.setDeleteToDo();
       this.setCompleted();
+      this.setEdit();
+      this.setToggleAll();
     }
   }, {
     key: "todoList",
@@ -325,6 +352,38 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
       })[0];
       var todoInd = app.todoList.indexOf(todo);
       app.todoList[todoInd].isDone = !app.todoList[todoInd].isDone;
+      app.todoListNode.render(app.todoList);
+      app.footerNode.render(app.todoList);
+      app.setToDoIds();
+      app.setEvents();
+    }
+  }, {
+    key: "editToDo",
+    value: function editToDo(event) {
+      console.log("edit triggered");
+    }
+  }, {
+    key: "toggleAll",
+    value: function toggleAll(event) {
+      var sameStateTrue = app.todoList.every(function (todo) {
+        return todo.isDone === true;
+      });
+      var sameStateFalse = app.todoList.every(function (todo) {
+        return todo.isDone === false;
+      });
+      var sameState = sameStateFalse || sameStateTrue;
+
+      if (sameState) {
+        app.todoList.forEach(function (todo) {
+          todo.isDone = !todo.isDone;
+        });
+      } else {
+        app.todoList.forEach(function (todo) {
+          todo.isDone = true;
+        });
+      }
+
+      app.toggleAllNode = sameStateTrue;
       app.todoListNode.render(app.todoList);
       app.footerNode.render(app.todoList);
       app.setToDoIds();
@@ -533,6 +592,7 @@ var TodoItem = /*#__PURE__*/function (_Stepan$Component) {
       var isDone = _ref.isDone,
           title = _ref.title,
           id = _ref.id;
+      var isEdited = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
       // render will always accept data to render
       var rootElement = _stepan["default"].createElement('li', this.parent, {
@@ -542,8 +602,7 @@ var TodoItem = /*#__PURE__*/function (_Stepan$Component) {
       var todoViewContainer = _stepan["default"].createElement('div', rootElement, {
         id: "view-".concat(id),
         "class": 'view'
-      }); // TODO: Input must be checked if todo item is done
-
+      });
 
       var toggle = _stepan["default"].createElement('input', todoViewContainer, {
         id: "toggle-".concat(id),
@@ -553,19 +612,27 @@ var TodoItem = /*#__PURE__*/function (_Stepan$Component) {
 
       toggle.checked = isDone === true;
 
-      _stepan["default"].createElement('label', todoViewContainer, {
-        innerText: title
-      });
+      if (!isEdited) {
+        var label = _stepan["default"].createElement('label', todoViewContainer, {
+          id: "label-".concat(id),
+          innerText: title
+        });
+      } else {
+        var _label = _stepan["default"].createElement('label', todoViewContainer, {
+          id: "label-".concat(id),
+          innerText: title
+        });
+
+        var input = _stepan["default"].createElement('input', rootElement, {
+          id: "edit-".concat(id),
+          "class": "edit",
+          value: title
+        });
+      }
 
       _stepan["default"].createElement('button', todoViewContainer, {
         id: "destroy-".concat(id),
         "class": "destroy"
-      });
-
-      _stepan["default"].createElement('input', todoViewContainer, {
-        id: "edit-".concat(id),
-        "class": "edit",
-        value: title
       });
 
       return rootElement;
@@ -661,7 +728,6 @@ var TodoList = /*#__PURE__*/function (_Stepan$Component) {
     key: "render",
     value: function render(todos) {
       // render will always accept data to render
-      console.log(todos);
       var name = TodoList.getName();
 
       var oldRootElement = _stepan["default"].getElementById(this.parent, name);
@@ -826,6 +892,7 @@ var TodoListToggleAll = /*#__PURE__*/function (_Stepan$Component) {
       });
 
       _stepan["default"].createElement('label', rootElement, {
+        id: "label-toggle-all",
         "for": "toggle-all"
       });
 
