@@ -87,6 +87,28 @@ class App extends Stepan.Component {
     app.setToDoIds();
     app.setEvents();
   }
+  static editToDo(event) {
+    console.log("edit triggered");
+  }
+  static toggleAll(event) {
+    let sameStateTrue = app.todoList.every((todo) => todo.isDone === true);
+    let sameStateFalse = app.todoList.every((todo) => todo.isDone === false);
+    let sameState = sameStateFalse || sameStateTrue;
+    if (sameState) {
+      app.todoList.forEach(todo => {
+        todo.isDone = !todo.isDone;
+      });
+    } else {
+      app.todoList.forEach(todo => {
+        todo.isDone = true;
+      });
+    }
+    app.toggleAllNode = sameStateTrue;
+    app.todoListNode.render(app.todoList);
+    app.footerNode.render(app.todoList);
+    app.setToDoIds();
+    app.setEvents();
+  }
   setAddToDoEvent() {
     this.input = Stepan.getElementById(null, "new-todo");
     this.background = Stepan.getElementById(null, "background");
@@ -105,10 +127,22 @@ class App extends Stepan.Component {
       toggle.addEventListener("click", App.completeToDo);
     }
   }
+  setEdit() {
+    this.edits = Stepan.getElementsByClassName("edit");
+    for (let edit of this.edits) {
+      edit.addEventListener("click", App.editToDo);
+    }
+  }
+  setToggleAll() {
+    this.toggleAllNode = Stepan.getElementById(null, "toggle-all");
+    this.toggleAllNode.addEventListener("click", App.toggleAll);
+  }
   setEvents() {
     this.setAddToDoEvent();
     this.setDeleteToDo();
     this.setCompleted();
+    this.setEdit();
+    this.setToggleAll();
   }
 }
 
