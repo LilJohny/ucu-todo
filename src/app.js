@@ -127,18 +127,21 @@ class App extends Stepan.Component {
     app.activeNode.className = "selected";
     app.allNode.className = "";
     app.completedNode.className = "";
+    app.setEvents();
   }
   static filterAll(event) {
     app.todoListNode.render(app.todoList);
     app.activeNode.className = "";
     app.allNode.className = "selected";
     app.completedNode.className = "";
+    app.setEvents();
   }
   static filterCompleted(event) {
     app.todoListNode.render(app.todoList.filter(todoObj => todoObj.isDone === true));
     app.activeNode.className = "";
     app.allNode.className = "";
     app.completedNode.className = "selected";
+    app.setEvents();
   }
   setAddToDoEvent() {
     this.input = Stepan.getElementById(null, "new-todo");

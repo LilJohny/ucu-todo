@@ -459,6 +459,7 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
       app.activeNode.className = "selected";
       app.allNode.className = "";
       app.completedNode.className = "";
+      app.setEvents();
     }
   }, {
     key: "filterAll",
@@ -467,6 +468,7 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
       app.activeNode.className = "";
       app.allNode.className = "selected";
       app.completedNode.className = "";
+      app.setEvents();
     }
   }, {
     key: "filterCompleted",
@@ -477,6 +479,7 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
       app.activeNode.className = "";
       app.allNode.className = "";
       app.completedNode.className = "selected";
+      app.setEvents();
     }
   }]);
 
