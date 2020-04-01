@@ -1042,7 +1042,7 @@ var Stepan = /*#__PURE__*/function () {
       var attributes = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
       if (!_htmlTags["default"].includes(element)) {
-        throw new StepanError("Can`t create element, that not html tag", "HTML tag error");
+        throw new this.TagError();
       }
 
       var newElement = document.createElement(element);
@@ -1087,6 +1087,14 @@ exports["default"] = Stepan;
 
 var Component = function Component(parent) {
   _classCallCheck(this, Component);
+
+  if (parent === null || parent === undefined) {
+    throw new Stepan.NullParentError();
+  }
+
+  if (!parent.tagName) {
+    throw new Stepan.InvalidDomError();
+  }
 
   this.parent = parent;
 };
@@ -1157,7 +1165,6 @@ var InvalidDomError = /*#__PURE__*/function (_StepanError3) {
 
 Stepan.TagError = TagError;
 Stepan.NullParentError = NullParentError;
-Stepan.InvalidDomError = InvalidDomError; // TODO: 2. throw an error if parent is null or undefined, or if it's not a valid DOM object
-// TODO (Bonus): Ensure that every component returns a top-level root element
+Stepan.InvalidDomError = InvalidDomError; // TODO (Bonus): Ensure that every component returns a top-level root element
 
 },{"html-tags":2}]},{},[3]);

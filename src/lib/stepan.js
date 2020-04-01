@@ -3,7 +3,7 @@ import htmlTags from 'html-tags';
 export default class Stepan {
   static createElement(element, parent, attributes = {}) {
     if (!htmlTags.includes(element)) {
-      throw new StepanError("Can`t create element, that not html tag", "HTML tag error");
+      throw new this.TagError();
     }
     const newElement = document.createElement(element);
 
@@ -35,6 +35,12 @@ export default class Stepan {
 
 class Component {
   constructor(parent) {
+    if (parent === null || parent === undefined) {
+      throw new Stepan.NullParentError();
+    }
+    if (!parent.tagName) {
+      throw new Stepan.InvalidDomError();
+    }
     this.parent = parent;
   }
 }
@@ -66,5 +72,4 @@ class InvalidDomError extends StepanError {
 Stepan.TagError = TagError;
 Stepan.NullParentError = NullParentError;
 Stepan.InvalidDomError = InvalidDomError;
-// TODO: 2. throw an error if parent is null or undefined, or if it's not a valid DOM object
 // TODO (Bonus): Ensure that every component returns a top-level root element
