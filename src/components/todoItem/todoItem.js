@@ -11,20 +11,16 @@
 import Stepan from '../../lib/stepan.js';
 
 export default class TodoItem extends Stepan.Component {
-  render({ isDone, title, id }, isEdited=true) { // render will always accept data to render
-    const rootElement = Stepan.createElement('li', this.parent, { class: isDone && 'completed' });
+  render({ isDone, title, id }) { // render will always accept data to render
+    const rootElement = Stepan.createElement('li', this.parent, { id:`todo-li-${id}`, class: isDone && 'completed' });
     const todoViewContainer = Stepan.createElement('div', rootElement, { id: `view-${id}`, class: 'view' });
 
     let toggle = Stepan.createElement('input', todoViewContainer, { id: `toggle-${id}`, class: "toggle", type: "checkbox" });
     toggle.checked = isDone === true;
-    if (!isEdited) {
-      let label = Stepan.createElement('label', todoViewContainer, { id: `label-${id}`, innerText: title });
-    } else {
-      let label = Stepan.createElement('label', todoViewContainer, { id: `label-${id}`, innerText: title });
-      let input = Stepan.createElement('input', rootElement, { id: `edit-${id}`, class: "edit", value: title });
-    }
+    let label = Stepan.createElement('label', todoViewContainer, { id: `label-${id}`, class:"label", innerText: title });
+    let input = Stepan.createElement('input', rootElement, { id: `edit-${id}`, class: "edit", value: title });
     Stepan.createElement('button', todoViewContainer, { id: `destroy-${id}`, class: "destroy" });
-    
+
 
     return rootElement;
   }

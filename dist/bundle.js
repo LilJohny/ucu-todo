@@ -274,20 +274,36 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
   }, {
     key: "setEdit",
     value: function setEdit() {
-      this.edits = _stepan["default"].getElementsByClassName("edit");
+      this.labels = _stepan["default"].getElementsByClassName("label");
 
-      var _iterator3 = _createForOfIteratorHelper(this.edits),
+      var _iterator3 = _createForOfIteratorHelper(this.labels),
           _step3;
 
       try {
         for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-          var edit = _step3.value;
-          edit.addEventListener("click", App.editToDo);
+          var label = _step3.value;
+          label.addEventListener("dblclick", App.editToDo);
         }
       } catch (err) {
         _iterator3.e(err);
       } finally {
         _iterator3.f();
+      }
+
+      this.inputs = _stepan["default"].getElementsByClassName("edit");
+
+      var _iterator4 = _createForOfIteratorHelper(this.inputs),
+          _step4;
+
+      try {
+        for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+          var input = _step4.value;
+          input.addEventListener("keyup", App.editFinished);
+        }
+      } catch (err) {
+        _iterator4.e(err);
+      } finally {
+        _iterator4.f();
       }
     }
   }, {
@@ -324,9 +340,9 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
     key: "setEvents",
     value: function setEvents() {
       this.setAddToDoEvent();
+      this.setEdit();
       this.setDeleteToDo();
       this.setCompleted();
-      this.setEdit();
       this.setToggleAll();
       this.setActiveFilter();
       this.setAllFilter();
@@ -387,7 +403,25 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
   }, {
     key: "editToDo",
     value: function editToDo(event) {
-      console.log("edit triggered");
+      var id = event.originalTarget.id.split("-")[1];
+
+      var li = _stepan["default"].getElementById(null, "todo-li-".concat(id));
+
+      li.className = "editing";
+    }
+  }, {
+    key: "editFinished",
+    value: function editFinished(event) {
+      if (event.keyCode === 13) {
+        var id = event.originalTarget.id.split("-")[1];
+
+        var li = _stepan["default"].getElementById(null, "todo-li-".concat(id));
+
+        li.className = app.todoList[parseInt(id)].isDone === true ? "completed" : "false";
+        app.todoList[parseInt(id)].title = event.originalTarget.value;
+        app.todoListNode.render(app.todoList);
+        app.setEvents();
+      }
     }
   }, {
     key: "toggleAll",
@@ -650,10 +684,10 @@ var TodoItem = /*#__PURE__*/function (_Stepan$Component) {
       var isDone = _ref.isDone,
           title = _ref.title,
           id = _ref.id;
-      var isEdited = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
       // render will always accept data to render
       var rootElement = _stepan["default"].createElement('li', this.parent, {
+        id: "todo-li-".concat(id),
         "class": isDone && 'completed'
       });
 
@@ -670,23 +704,17 @@ var TodoItem = /*#__PURE__*/function (_Stepan$Component) {
 
       toggle.checked = isDone === true;
 
-      if (!isEdited) {
-        var label = _stepan["default"].createElement('label', todoViewContainer, {
-          id: "label-".concat(id),
-          innerText: title
-        });
-      } else {
-        var _label = _stepan["default"].createElement('label', todoViewContainer, {
-          id: "label-".concat(id),
-          innerText: title
-        });
+      var label = _stepan["default"].createElement('label', todoViewContainer, {
+        id: "label-".concat(id),
+        "class": "label",
+        innerText: title
+      });
 
-        var input = _stepan["default"].createElement('input', rootElement, {
-          id: "edit-".concat(id),
-          "class": "edit",
-          value: title
-        });
-      }
+      var input = _stepan["default"].createElement('input', rootElement, {
+        id: "edit-".concat(id),
+        "class": "edit",
+        value: title
+      });
 
       _stepan["default"].createElement('button', todoViewContainer, {
         id: "destroy-".concat(id),

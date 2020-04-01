@@ -88,7 +88,20 @@ class App extends Stepan.Component {
     app.setEvents();
   }
   static editToDo(event) {
-    console.log("edit triggered");
+    let id = event.originalTarget.id.split("-")[1];
+    let li = Stepan.getElementById(null, `todo-li-${id}`);
+    li.className = "editing";
+  }
+  static editFinished(event) {
+    if (event.keyCode === 13) {
+      let id = event.originalTarget.id.split("-")[1];
+      let li = Stepan.getElementById(null, `todo-li-${id}`);
+      li.className = app.todoList[parseInt(id)].isDone === true ? "completed" : "false";
+      app.todoList[parseInt(id)].title = event.originalTarget.value;
+      app.todoListNode.render(app.todoList);
+      
+      app.setEvents();
+    }
   }
   static toggleAll(event) {
     let sameStateTrue = app.todoList.every((todo) => todo.isDone === true);
@@ -146,9 +159,13 @@ class App extends Stepan.Component {
     }
   }
   setEdit() {
-    this.edits = Stepan.getElementsByClassName("edit");
-    for (let edit of this.edits) {
-      edit.addEventListener("click", App.editToDo);
+    this.labels = Stepan.getElementsByClassName("label");
+    for (let label of this.labels) {
+      label.addEventListener("dblclick", App.editToDo);
+    }
+    this.inputs = Stepan.getElementsByClassName("edit");
+    for (let input of this.inputs) {
+      input.addEventListener("keyup", App.editFinished);
     }
   }
   setToggleAll() {
@@ -156,29 +173,31 @@ class App extends Stepan.Component {
     this.toggleAllNode.addEventListener("click", App.toggleAll);
   }
   setActiveFilter() {
-    this.allNode = Stepan.getElementById(null,"filter-all");
-    this.completedNode = Stepan.getElementById(null,"filter-completed");
-    this.activeNode = Stepan.getElementById(null,"filter-active");
-    this.activeNode.addEventListener("click",App.filterActive);
+    this.allNode = Stepan.getElementById(null, "filter-all");
+    this.completedNode = Stepan.getElementById(null, "filter-completed");
+    this.activeNode = Stepan.getElementById(null, "filter-active");
+    this.activeNode.addEventListener("click", App.filterActive);
   }
   setCompletedFilter() {
-    this.allNode = Stepan.getElementById(null,"filter-all");
-    this.completedNode = Stepan.getElementById(null,"filter-completed");
-    this.activeNode = Stepan.getElementById(null,"filter-active");
-    this.completedNode.addEventListener("click",App.filterCompleted);
+    this.allNode = Stepan.getElementById(null, "filter-all");
+    this.completedNode = Stepan.getElementById(null, "filter-completed");
+    this.activeNode = Stepan.getElementById(null, "filter-active");
+    this.completedNode.addEventListener("click", App.filterCompleted);
   }
   setAllFilter() {
-    this.allNode = Stepan.getElementById(null,"filter-all");
-    this.completedNode = Stepan.getElementById(null,"filter-completed");
-    this.activeNode = Stepan.getElementById(null,"filter-active");
-    this.allNode.addEventListener("click",App.filterAll);
+    this.allNode = Stepan.getElementById(null, "filter-all");
+    this.completedNode = Stepan.getElementById(null, "filter-completed");
+    this.activeNode = Stepan.getElementById(null, "filter-active");
+    this.allNode.addEventListener("click", App.filterAll);
   }
   setEvents() {
     this.setAddToDoEvent();
+    this.setEdit();
     this.setDeleteToDo();
     this.setCompleted();
-    this.setEdit();
+
     this.setToggleAll();
+
     this.setActiveFilter();
     this.setAllFilter();
     this.setCompletedFilter();
