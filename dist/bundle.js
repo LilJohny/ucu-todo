@@ -297,6 +297,30 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
       this.toggleAllNode.addEventListener("click", App.toggleAll);
     }
   }, {
+    key: "setActiveFilter",
+    value: function setActiveFilter() {
+      this.allNode = _stepan["default"].getElementById(null, "filter-all");
+      this.completedNode = _stepan["default"].getElementById(null, "filter-completed");
+      this.activeNode = _stepan["default"].getElementById(null, "filter-active");
+      this.activeNode.addEventListener("click", App.filterActive);
+    }
+  }, {
+    key: "setCompletedFilter",
+    value: function setCompletedFilter() {
+      this.allNode = _stepan["default"].getElementById(null, "filter-all");
+      this.completedNode = _stepan["default"].getElementById(null, "filter-completed");
+      this.activeNode = _stepan["default"].getElementById(null, "filter-active");
+      this.completedNode.addEventListener("click", App.filterCompleted);
+    }
+  }, {
+    key: "setAllFilter",
+    value: function setAllFilter() {
+      this.allNode = _stepan["default"].getElementById(null, "filter-all");
+      this.completedNode = _stepan["default"].getElementById(null, "filter-completed");
+      this.activeNode = _stepan["default"].getElementById(null, "filter-active");
+      this.allNode.addEventListener("click", App.filterAll);
+    }
+  }, {
     key: "setEvents",
     value: function setEvents() {
       this.setAddToDoEvent();
@@ -304,6 +328,9 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
       this.setCompleted();
       this.setEdit();
       this.setToggleAll();
+      this.setActiveFilter();
+      this.setAllFilter();
+      this.setCompletedFilter();
     }
   }, {
     key: "todoList",
@@ -389,6 +416,34 @@ var App = /*#__PURE__*/function (_Stepan$Component) {
       app.setToDoIds();
       app.setEvents();
     }
+  }, {
+    key: "filterActive",
+    value: function filterActive(event) {
+      app.todoListNode.render(app.todoList.filter(function (todoObj) {
+        return todoObj.isDone === false;
+      }));
+      app.activeNode.className = "selected";
+      app.allNode.className = "";
+      app.completedNode.className = "";
+    }
+  }, {
+    key: "filterAll",
+    value: function filterAll(event) {
+      app.todoListNode.render(app.todoList);
+      app.activeNode.className = "";
+      app.allNode.className = "selected";
+      app.completedNode.className = "";
+    }
+  }, {
+    key: "filterCompleted",
+    value: function filterCompleted(event) {
+      app.todoListNode.render(app.todoList.filter(function (todoObj) {
+        return todoObj.isDone === true;
+      }));
+      app.activeNode.className = "";
+      app.allNode.className = "";
+      app.completedNode.className = "selected";
+    }
   }]);
 
   return App;
@@ -472,6 +527,7 @@ var Footer = /*#__PURE__*/function (_Stepan$Component) {
       var all = _stepan["default"].createElement('li', filters);
 
       _stepan["default"].createElement('a', all, {
+        id: "filter-all",
         href: "#/",
         "class": "selected",
         innerText: 'All'
@@ -480,6 +536,7 @@ var Footer = /*#__PURE__*/function (_Stepan$Component) {
       var active = _stepan["default"].createElement('li', filters);
 
       _stepan["default"].createElement('a', active, {
+        id: "filter-active",
         href: "#/active",
         "class": "",
         innerText: 'Active'
@@ -488,6 +545,7 @@ var Footer = /*#__PURE__*/function (_Stepan$Component) {
       var completed = _stepan["default"].createElement('li', filters);
 
       _stepan["default"].createElement('a', completed, {
+        id: "filter-completed",
         href: "#/completed",
         "class": "",
         innerText: 'Completed'

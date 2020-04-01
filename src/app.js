@@ -109,6 +109,24 @@ class App extends Stepan.Component {
     app.setToDoIds();
     app.setEvents();
   }
+  static filterActive(event) {
+    app.todoListNode.render(app.todoList.filter(todoObj => todoObj.isDone === false));
+    app.activeNode.className = "selected";
+    app.allNode.className = "";
+    app.completedNode.className = "";
+  }
+  static filterAll(event) {
+    app.todoListNode.render(app.todoList);
+    app.activeNode.className = "";
+    app.allNode.className = "selected";
+    app.completedNode.className = "";
+  }
+  static filterCompleted(event) {
+    app.todoListNode.render(app.todoList.filter(todoObj => todoObj.isDone === true));
+    app.activeNode.className = "";
+    app.allNode.className = "";
+    app.completedNode.className = "selected";
+  }
   setAddToDoEvent() {
     this.input = Stepan.getElementById(null, "new-todo");
     this.background = Stepan.getElementById(null, "background");
@@ -137,12 +155,33 @@ class App extends Stepan.Component {
     this.toggleAllNode = Stepan.getElementById(null, "toggle-all");
     this.toggleAllNode.addEventListener("click", App.toggleAll);
   }
+  setActiveFilter() {
+    this.allNode = Stepan.getElementById(null,"filter-all");
+    this.completedNode = Stepan.getElementById(null,"filter-completed");
+    this.activeNode = Stepan.getElementById(null,"filter-active");
+    this.activeNode.addEventListener("click",App.filterActive);
+  }
+  setCompletedFilter() {
+    this.allNode = Stepan.getElementById(null,"filter-all");
+    this.completedNode = Stepan.getElementById(null,"filter-completed");
+    this.activeNode = Stepan.getElementById(null,"filter-active");
+    this.completedNode.addEventListener("click",App.filterCompleted);
+  }
+  setAllFilter() {
+    this.allNode = Stepan.getElementById(null,"filter-all");
+    this.completedNode = Stepan.getElementById(null,"filter-completed");
+    this.activeNode = Stepan.getElementById(null,"filter-active");
+    this.allNode.addEventListener("click",App.filterAll);
+  }
   setEvents() {
     this.setAddToDoEvent();
     this.setDeleteToDo();
     this.setCompleted();
     this.setEdit();
     this.setToggleAll();
+    this.setActiveFilter();
+    this.setAllFilter();
+    this.setCompletedFilter();
   }
 }
 
