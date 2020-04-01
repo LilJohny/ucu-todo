@@ -1003,6 +1003,28 @@ var _htmlTags = _interopRequireDefault(require("html-tags"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
+
+function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -1020,7 +1042,7 @@ var Stepan = /*#__PURE__*/function () {
       var attributes = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
       if (!_htmlTags["default"].includes(element)) {
-        console.log("Tag error"); //TODO throw Exception
+        throw new StepanError("Can`t create element, that not html tag", "HTML tag error");
       }
 
       var newElement = document.createElement(element);
@@ -1063,16 +1085,79 @@ var Stepan = /*#__PURE__*/function () {
 
 exports["default"] = Stepan;
 
-Stepan.Component = /*#__PURE__*/function () {
-  function _class(parent) {
-    _classCallCheck(this, _class);
+var Component = function Component(parent) {
+  _classCallCheck(this, Component);
 
-    this.parent = parent;
+  this.parent = parent;
+};
+
+Stepan.Component = Component;
+
+var StepanError = /*#__PURE__*/function (_Error) {
+  _inherits(StepanError, _Error);
+
+  var _super = _createSuper(StepanError);
+
+  function StepanError(message) {
+    var _this;
+
+    _classCallCheck(this, StepanError);
+
+    _this = _super.call(this, message);
+    _this.name = "StepanError";
+    return _this;
   }
 
-  return _class;
-}(); // TODO: 1. Create StepanError class to define all framework errors
-//       2. throw an error if parent is null or undefined, or if it's not a valid DOM object
+  return StepanError;
+}( /*#__PURE__*/_wrapNativeSuper(Error));
+
+Stepan.StepanError = StepanError;
+
+var TagError = /*#__PURE__*/function (_StepanError) {
+  _inherits(TagError, _StepanError);
+
+  var _super2 = _createSuper(TagError);
+
+  function TagError() {
+    _classCallCheck(this, TagError);
+
+    return _super2.call(this, "Invalid HTML tag name !");
+  }
+
+  return TagError;
+}(StepanError);
+
+var NullParentError = /*#__PURE__*/function (_StepanError2) {
+  _inherits(NullParentError, _StepanError2);
+
+  var _super3 = _createSuper(NullParentError);
+
+  function NullParentError() {
+    _classCallCheck(this, NullParentError);
+
+    return _super3.call(this, "Objects parent is null or undefined !");
+  }
+
+  return NullParentError;
+}(StepanError);
+
+var InvalidDomError = /*#__PURE__*/function (_StepanError3) {
+  _inherits(InvalidDomError, _StepanError3);
+
+  var _super4 = _createSuper(InvalidDomError);
+
+  function InvalidDomError() {
+    _classCallCheck(this, InvalidDomError);
+
+    return _super4.call(this, "DOM object is invalid !");
+  }
+
+  return InvalidDomError;
+}(StepanError);
+
+Stepan.TagError = TagError;
+Stepan.NullParentError = NullParentError;
+Stepan.InvalidDomError = InvalidDomError; // TODO: 2. throw an error if parent is null or undefined, or if it's not a valid DOM object
 // TODO (Bonus): Ensure that every component returns a top-level root element
 
 },{"html-tags":2}]},{},[3]);
