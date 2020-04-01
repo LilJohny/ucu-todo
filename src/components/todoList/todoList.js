@@ -24,7 +24,6 @@ import { TodoItem } from '../todoItem/index.js';
 
 export default class TodoList extends Stepan.Component {
   render(todos) { // render will always accept data to render
-    console.log(todos);
     const name = TodoList.getName();
     let oldRootElement = Stepan.getElementById(this.parent, name);
     if (oldRootElement !== null) {
